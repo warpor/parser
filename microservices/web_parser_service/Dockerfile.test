@@ -1,0 +1,14 @@
+FROM python:3.10-slim-buster
+
+WORKDIR /service
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONBUFFERED 1
+
+RUN pip install --upgrade pip
+COPY ./requirements-tests.txt .
+RUN pip install --no-cache-dir -r requirements-tests.txt
+COPY . ./
+ENV PYTHONPATH=/app
+# Указываем команду запуска FastAPI-приложения через Uvicorn
+CMD ["pytest"]
