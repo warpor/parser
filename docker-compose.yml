@@ -48,7 +48,7 @@ services:
     ports:
       - "${DB_PORT}:27017"
     healthcheck:
-      test: mongo --eval "db.runCommand('ping').ok" --quiet    
+      test: echo 'db.stats().ok' | mongo localhost:27017/test --quiet
       interval: 10s
       timeout: 10s
       retries: 5
