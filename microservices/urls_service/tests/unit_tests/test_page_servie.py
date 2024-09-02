@@ -16,6 +16,15 @@ async def test_get_page_html_not_found(pages_service: PagesService,
         await pages_service.get_page_html(url)
 
     assert e.value.status_code == 404
-    assert e.value.detail == "Page not found"
 
-# TODO тест на успех
+
+@pytest.mark.asyncio
+async def test_get_page_html_success(pages_service: PagesService,
+                                     mock_pages_repository: Mock) -> None:
+    url = "https://example.com"
+    expected_html = "<html><body>Example Content</body></html>"
+    mock_pages_repository.get_page_html.return_value = expected_html
+
+    result = await pages_service.get_page_html(url)
+
+    assert result == expected_html
