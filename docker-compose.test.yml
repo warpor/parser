@@ -45,7 +45,6 @@ services:
       - mongodb
     profiles:
       - tests
-      - main
 
 
   urls_service:
@@ -63,7 +62,6 @@ services:
         condition: service_healthy
     profiles:
       - tests
-      - main
 
 
   web_parser:
@@ -79,7 +77,6 @@ services:
         condition: service_healthy
     profiles:
       - tests
-      - main
 
 
   mongodb:
@@ -89,7 +86,6 @@ services:
       - "${DB_PORT}:27017"
     profiles:
       - tests
-      - main
 
 
   rabbitmq:
@@ -105,4 +101,6 @@ services:
       test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
       interval: 10s
       retries: 5
+    profiles:
+      - tests
  
