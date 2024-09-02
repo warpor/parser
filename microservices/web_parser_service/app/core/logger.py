@@ -4,6 +4,7 @@ from app.core.config import settings
 
 
 def setup_logging() -> None:
+    print(settings.TESTS_MODE)
     if not settings.TESTS_MODE:
         logging.basicConfig(
             level=logging.INFO,
