@@ -47,6 +47,7 @@ jobs:
           echo "BROKER_START_URLS_QUEUE=${{ vars.BROKER_START_URLS_QUEUE }}" >> .env_tests
           echo "BROKER_DEFAULT_USER=${{ vars.BROKER_DEFAULT_USER }}" >> .env_tests
           echo "BROKER_DEFAULT_PASS=${{ vars.BROKER_DEFAULT_PASS }}" >> .env_tests
+          echo "TESTS_MODE=${{ vars.TESTS_MODE }}" >> .env_tests
           
       - name: Run tests for parser
         run: docker compose -f docker-compose.test.yml up web_parser_tests --abort-on-container-exit
