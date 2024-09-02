@@ -25,3 +25,8 @@ def parser() -> PageParser:
 @pytest.fixture()
 def fetcher() -> PageFetcher:
     return PageFetcher()
+
+
+@pytest.fixture()
+def url() -> str:
+    return "https://example.com"
