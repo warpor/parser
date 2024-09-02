@@ -73,6 +73,8 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+      mongodb:
+        condition: service_healthy
     profiles:
       - tests
 
@@ -84,7 +86,12 @@ services:
       - "${DB_PORT}:27017"
     profiles:
       - tests
-
+    healthcheck:
+      test: mongo --eval "db.runCommand('ping').ok" --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   rabbitmq:
     image: rabbitmq:3-management

@@ -20,9 +20,7 @@ class Settings:
     BROKER_START_URLS_QUEUE: str | None = os.getenv("BROKER_START_URLS_QUEUE")
 
     def get_database_url(self) -> str:
-        xml = f"{self.DB}://{self.DB_HOST}:{self.DB_PORT}"
-        print(xml)
-        return xml
+        return f"{self.DB}://{self.DB_HOST}:{self.DB_PORT}"
 
     def get_broker_url(self) -> str:
         return (f"{self.BROKER_PROTOCOL}://{self.BROKER_USER}:"

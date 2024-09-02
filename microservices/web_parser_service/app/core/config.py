@@ -26,7 +26,8 @@ class Settings:
     BROKER_USER: str | None = os.getenv("BROKER_DEFAULT_USER")
     BROKER_PASS: str | None = os.getenv("BROKER_DEFAULT_PASS")
     BROKER_START_URLS_QUEUE: str | None = os.getenv("BROKER_START_URLS_QUEUE")
-    TESTS_MODE: bool | None = bool(os.getenv("TESTS_MODE"))
+    TESTS_MODE: bool | None = (os.getenv("TESTS_MODE", "False").lower()
+                               in ("true", "t", "1"))
 
     request_timeout_in_seconds: int
     max_timeout_is_seconds: int
