@@ -55,7 +55,8 @@ class Crawler:
             logger.warn(f"Request error for URL: {work_item.url}. Exception: {str(e)}")
 
         except Exception as e:
-            logger.error(f"Unexpected error for URL: {work_item.url}. Exception {str(e)}")
+            logger.error(f"Unexpected error for URL:"
+                         f" {work_item.url}. Exception {str(e)}")
 
     async def __process_html(self, html: str, work_item: PageInQueue) -> None:
         title, links = self.page_parser.parse(html,
@@ -82,10 +83,12 @@ class Crawler:
         temp = self.visited_pages.copy()
         self.visited_pages.clear()
         await self.pages_service.insert_pages(temp)
-        logger.info(f"Added to mongodb {len(temp)} pages. Initial page: {self.page_post}")
+        logger.info(f"Added to mongodb {len(temp)} "
+                    f"pages. Initial page: {self.page_post}")
 
     async def __parse_urls(self, concurrent_page_loads: int, depth: int) -> None:
-        conn = aiohttp.TCPConnector(limit_per_host=concurrent_page_loads, verify_ssl=False)
+        conn = aiohttp.TCPConnector(limit_per_host=concurrent_page_loads,
+                                    verify_ssl=False)
         async with aiohttp.ClientSession(connector=conn) as session:
             workers = [asyncio.create_task(self.__parse(session, depth))
                        for _ in range(concurrent_page_loads)]

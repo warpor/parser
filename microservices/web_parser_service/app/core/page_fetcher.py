@@ -16,7 +16,8 @@ class PageFetcher:
         wait=wait_exponential(multiplier=1, min=1, max=10)
     )
     async def get_html(self, session: ClientSession, url: str) -> str | None:
-        async with session.get(url, headers=self.headers, timeout=settings.request_timeout_in_seconds) as response:
+        async with session.get(url, headers=self.headers,
+                               timeout=settings.request_timeout_in_seconds) as response:
             if self.check_html(response, url):
                 return await response.text()
             logger.warn(f"Can't fetch html from {url}")

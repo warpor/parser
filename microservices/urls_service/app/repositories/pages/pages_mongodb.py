@@ -34,4 +34,5 @@ class PagesRepositoryMongodb(PagesRepositoryProtocol):
             document = await self.collection.find_one({"url": str(url)})
             return document.get("html", None)
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Error retrieving page HTML content: {e}")
+            raise HTTPException(status_code=500,
+                                detail=f"Error retrieving page HTML content: {e}")

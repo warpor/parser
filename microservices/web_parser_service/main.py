@@ -1,5 +1,5 @@
-import logging
 from contextlib import asynccontextmanager
+from typing import AsyncGenerator
 
 from fast_depends import Depends
 from faststream import FastStream, ContextRepo
@@ -11,7 +11,7 @@ from app.schemas.pages_schemas import PagePost
 
 
 @asynccontextmanager
-async def lifespan(context: ContextRepo):
+async def lifespan(context: ContextRepo) -> AsyncGenerator:
     setup_logging()
     yield
 

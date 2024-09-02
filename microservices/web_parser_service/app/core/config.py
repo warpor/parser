@@ -34,7 +34,8 @@ class Settings:
     headers: dict[str, str]
 
     def __init__(self, app_config: dict[str, Any]):
-        self.request_timeout_in_seconds = app_config.get("request_timeout_in_seconds", 5)
+        self.request_timeout_in_seconds = app_config.get(
+            "request_timeout_in_seconds", 5)
         self.max_timeout_is_seconds = app_config.get("max_timeout_is_seconds", 30)
         self.retries_count = app_config.get("retries_count", 1)
         self.mongo_batch_size = app_config.get("mongo_batch_size", 100)
