@@ -24,10 +24,17 @@ class PageFetcher:
             return None
 
     @staticmethod
-    def check_html(response: ClientResponse, url: str) -> bool:
+    def check_status(response: ClientResponse, url: str) -> bool:
         if not 200 <= response.status < 300:
             logger.warn(f"Incorrect status code: {response.status} from {url}")
             return False
+        return True
 
+    @staticmethod
+    def check_content_type(response: ClientResponse) -> bool:
         content_type = response.headers.get("Content-Type", "").lower()
         return "html" in content_type
+
+    @staticmethod
+    def check_html(response: ClientResponse, url: str) -> bool:
+        return PageFetcher.check_status(response, url) and PageFetcher.check_content_type(response)
