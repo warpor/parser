@@ -1,0 +1,10 @@
+{
+  "request_timeout_in_seconds": 10,
+  "max_timeout_is_seconds": 30,
+  "retries_count": 3,
+  "mongo_batch_size": 100,
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0) Gecko/20100101 Firefox/98.0",
+    "Connection": "keep-alive"
+  }
+}
