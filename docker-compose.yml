@@ -1,0 +1,68 @@
+version: '3.8'
+services:
+  migrate:
+    build: ./initial_migration
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+
+
+
+  urls_service:
+    build:
+      context: ./microservices/urls_service
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      rabbitmq:
+        condition: service_healthy
+
+
+
+  web_parser:
+    build:
+      context: microservices/web_parser_service
+      dockerfile: Dockerfile
+    volumes:
+      - ./logs/web_parser:/service/logs
+    env_file:
+      - .env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "${DB_PORT}:27017"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: '${BROKER_HOST}'
+    container_name: rabbitmq
+    ports:
+      - "${BROKER_PORT}:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 10s
+      retries: 5
+
+
+volumes:
+  mongo_data:
+  rabbitmq_data:
