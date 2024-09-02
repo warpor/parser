@@ -1,0 +1,7 @@
+motor
+fastapi
+faststream[rabbit]
+aiohttp
+python-dotenv
+beautifulsoup4
+tenacity
