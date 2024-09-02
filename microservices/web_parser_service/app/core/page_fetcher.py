@@ -37,4 +37,5 @@ class PageFetcher:
 
     @staticmethod
     def check_html(response: ClientResponse, url: str) -> bool:
-        return PageFetcher.check_status(response, url) and PageFetcher.check_content_type(response)
+        return (PageFetcher.check_status(response, url)
+                and PageFetcher.check_content_type(response))
