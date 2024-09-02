@@ -7,9 +7,8 @@ from app.core.page_fetcher import PageFetcher
 
 
 @pytest.mark.asyncio
-async def test_get_html_success(fetcher: PageFetcher) -> None:
+async def test_get_html_success(fetcher: PageFetcher, url: str) -> None:
     with aioresponses() as mock:
-        url = "https://example.com"
         html_content = "<html><body>Test</body></html>"
 
         mock.get(url, status=200,
@@ -22,12 +21,8 @@ async def test_get_html_success(fetcher: PageFetcher) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_invalid_html() -> None:
-    fetcher = PageFetcher()
-
+async def test_get_invalid_html(fetcher: PageFetcher, url: str) -> None:
     with aioresponses() as mock:
-        url = "https://example.com"
-
         mock.get(url, status=200,
                  headers={"Content-Type": "application/json"}, body='{}')
 
@@ -38,12 +33,8 @@ async def test_get_invalid_html() -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_html_failure() -> None:
-    fetcher = PageFetcher()
-
+async def test_get_html_failure(fetcher: PageFetcher, url: str) -> None:
     with aioresponses() as mock:
-        url = "https://example.com"
-
         mock.get(url, status=500)
 
         async with ClientSession() as session:
@@ -52,25 +43,25 @@ async def test_get_html_failure() -> None:
         assert result is None
 
 
-def test_check_html_success(fetcher: PageFetcher) -> None:
+def test_check_html_success(fetcher: PageFetcher, url: str) -> None:
     response = Mock(spec=ClientResponse)
     response.status = 200
     response.headers = {"Content-Type": "text/html"}
 
-    assert fetcher.check_html(response) is True
+    assert fetcher.check_status(response, url) is True
 
 
-def test_check_html_non_html_content_type(fetcher: PageFetcher) -> None:
+def test_check_html_non_html_content_type(fetcher: PageFetcher, url: str) -> None:
     response = Mock(spec=ClientResponse)
     response.status = 200
     response.headers = {"Content-Type": "application/json"}
 
-    assert fetcher.check_html(response) is False
+    assert fetcher.check_content_type(response, url) is False
 
 
-def test_check_html_non_success_status(fetcher: PageFetcher) -> None:
+def test_check_html_non_success_status(fetcher: PageFetcher, url: str) -> None:
     response = Mock(spec=ClientResponse)
     response.status = 404
     response.headers = {"Content-Type": "text/html"}
 
-    assert fetcher.check_html(response) is False
+    assert fetcher.check_status(response, url) is False
