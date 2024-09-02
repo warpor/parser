@@ -1,0 +1,108 @@
+version: '3.8'
+services:
+
+  urls_service_tests:
+    build:
+      context: ./microservices/urls_service
+      dockerfile: Dockerfile.test
+    env_file:
+      - .env
+    depends_on:
+      - urls_service
+      - web_parser
+      - test_server
+    profiles:
+      - tests
+
+
+  web_parser_tests:
+    build:
+      context: ./microservices/web_parser_service
+      dockerfile: Dockerfile.test
+    env_file:
+      - .env
+    depends_on:
+      - web_parser
+      - test_server
+    profiles:
+      - tests
+
+  test_server:
+    build:
+      context: ./test_server
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    profiles:
+      - tests
+
+
+  migrate:
+    build: ./initial_migration
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+    profiles:
+      - tests
+      - main
+
+
+  urls_service:
+    build:
+      context: ./microservices/urls_service
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      rabbitmq:
+        condition: service_healthy
+    profiles:
+      - tests
+      - main
+
+
+  web_parser:
+    build:
+      context: microservices/web_parser_service
+      dockerfile: Dockerfile
+    volumes:
+      - ./logs/web_parser:/service/logs
+    env_file:
+      - .env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    profiles:
+      - tests
+      - main
+
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "${DB_PORT}:27017"
+    profiles:
+      - tests
+      - main
+
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: '${BROKER_HOST}'
+    container_name: rabbitmq
+    ports:
+      - "${BROKER_PORT}:5672"
+      - "15672:15672"
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 10s
+      retries: 5
+ 
