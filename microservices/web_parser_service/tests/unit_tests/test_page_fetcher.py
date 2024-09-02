@@ -56,7 +56,7 @@ def test_check_html_non_html_content_type(fetcher: PageFetcher, url: str) -> Non
     response.status = 200
     response.headers = {"Content-Type": "application/json"}
 
-    assert fetcher.check_content_type(response, url) is False
+    assert fetcher.check_content_type(response) is False
 
 
 def test_check_html_non_success_status(fetcher: PageFetcher, url: str) -> None:
