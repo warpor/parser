@@ -102,7 +102,6 @@ class Crawler:
 
     async def start_crawler(self, page_post: PagePost) -> None:
         logger.info(f"Starting crawler {page_post}")
-        print("here")
         self.page_post = page_post
         self.queue.put_nowait((0, PageInQueue(url=str(page_post.url), depth=0)))
         await self.__parse_urls(page_post.concurrent_page_loads, page_post.depth)
