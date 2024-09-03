@@ -53,7 +53,8 @@ class Crawler:
             logger.warning(f"Timeout error for URL: {work_item.url}")
 
         except ClientError as e:
-            logger.warning(f"Request error for URL: {work_item.url}. Exception: {str(e)}")
+            logger.warning(f"Request error for URL: {work_item.url}. "
+                           f"Exception: {str(e)}")
 
         except HTTPError as e:
             logger.warning(f"HTTPError for URL: {work_item.url}. Exception: {str(e)}")
