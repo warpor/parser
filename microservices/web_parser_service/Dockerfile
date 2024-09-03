@@ -11,5 +11,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . ./
 RUN rm -rf tests
 
-# Указываем команду запуска FastAPI-приложения через Uvicorn
 CMD ["faststream", "run", "main:app"]

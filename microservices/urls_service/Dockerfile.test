@@ -10,5 +10,4 @@ COPY ./requirements-tests.txt .
 RUN pip install --no-cache-dir -r requirements-tests.txt
 COPY . ./
 
-# Указываем команду запуска FastAPI-приложения через Uvicorn
 CMD ["pytest"]
