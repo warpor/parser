@@ -26,7 +26,7 @@ class PageFetcher:
 
     @staticmethod
     def check_status(response: ClientResponse, url: str) -> bool:
-        if response.status == 404:
+        if response.status == 404 or response.status >= 500:
             logger.warning(f"Incorrect status code: {response.status} from {url}")
             return False
         if not 200 <= response.status < 300:
