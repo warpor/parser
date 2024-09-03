@@ -35,5 +35,4 @@ async def test_get_pages(parser_post: dict, client: TestClient) -> None:
         time.sleep(1)
 
     assert processed, "Message was not processed within the expected time"
-    print(response.json())
     assert response.status_code == 200

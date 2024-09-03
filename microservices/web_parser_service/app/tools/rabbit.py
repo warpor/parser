@@ -10,8 +10,6 @@ class RabbitConsumer:
         self.start_urls_queue = start_urls_queue
 
 
-print(settings.get_broker_url())
-print(settings.BROKER_START_URLS_QUEUE)
 rabbit_consumer = RabbitConsumer(
     RabbitBroker(settings.get_broker_url()),
     RabbitQueue(settings.BROKER_START_URLS_QUEUE, durable=True))
