@@ -33,9 +33,9 @@ async def test_get_invalid_html(fetcher: PageFetcher, url: str) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_html_failure(fetcher: PageFetcher, url: str) -> None:
+async def test_get_html_not_found(fetcher: PageFetcher, url: str) -> None:
     with aioresponses() as mock:
-        mock.get(url, status=500)
+        mock.get(url, status=404)
 
         async with ClientSession() as session:
             result = await fetcher.get_html(session, url)
