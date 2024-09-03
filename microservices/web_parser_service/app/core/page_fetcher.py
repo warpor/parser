@@ -1,8 +1,8 @@
 from aiohttp import ClientSession, ClientResponse
-from tenacity import retry, stop_after_attempt, wait_exponential
-
+from aiohttp.web_exceptions import HTTPError
 from app.core.config import settings
 from app.core.logger import logger
+from tenacity import retry, stop_after_attempt, wait_random
 
 
 class PageFetcher:
@@ -13,7 +13,8 @@ class PageFetcher:
 
     @retry(
         stop=stop_after_attempt(settings.retries_count),
-        wait=wait_exponential(multiplier=1, min=1, max=10)
+        reraise=True,
+        wait=wait_random(min=1, max=10)
     )
     async def get_html(self, session: ClientSession, url: str) -> str | None:
         async with session.get(url, headers=self.headers,
@@ -25,9 +26,11 @@ class PageFetcher:
 
     @staticmethod
     def check_status(response: ClientResponse, url: str) -> bool:
-        if not 200 <= response.status < 300:
+        if response.status == 404:
             logger.warning(f"Incorrect status code: {response.status} from {url}")
             return False
+        if not 200 <= response.status < 300:
+            raise HTTPError(reason=f"Incorrect status code {response.status}")
         return True
 
     @staticmethod

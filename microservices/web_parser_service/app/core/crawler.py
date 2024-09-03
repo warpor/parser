@@ -3,6 +3,7 @@ from asyncio import PriorityQueue
 
 import aiohttp
 from aiohttp import ClientSession, ClientError
+from aiohttp.web_exceptions import HTTPError
 
 from app.core.page_fetcher import PageFetcher
 from app.core.logger import logger
@@ -53,6 +54,9 @@ class Crawler:
 
         except ClientError as e:
             logger.warning(f"Request error for URL: {work_item.url}. Exception: {str(e)}")
+
+        except HTTPError as e:
+            logger.warning(f"HTTPError for URL: {work_item.url}. Exception: {str(e)}")
 
         except Exception as e:
             logger.error(f"Unexpected error for URL:"
