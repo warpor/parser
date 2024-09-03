@@ -32,7 +32,9 @@ class PagesRepositoryMongodb(PagesRepositoryProtocol):
     async def get_page_html(self, url: AnyHttpUrl) -> str | None:
         try:
             document = await self.collection.find_one({"url": str(url)})
-            return document.get("html", None)
+            if document:
+                return document.get("html", None)
+            return document
         except Exception as e:
             raise HTTPException(status_code=500,
                                 detail=f"Error retrieving page HTML content: {e}")
