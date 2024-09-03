@@ -15,5 +15,5 @@ class RabbitSender:
 
 
 rabbit_sender = RabbitSender(RabbitRouter(
-    settings.get_broker_url(), include_in_schema=False),
+    settings.get_broker_url(), include_in_schema=False, fail_fast=False),
     RabbitQueue(settings.BROKER_START_URLS_QUEUE, durable=True))

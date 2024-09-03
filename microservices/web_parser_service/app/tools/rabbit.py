@@ -11,5 +11,5 @@ class RabbitConsumer:
 
 
 rabbit_consumer = RabbitConsumer(
-    RabbitBroker(settings.get_broker_url()),
+    RabbitBroker(settings.get_broker_url(), fail_fast=False),
     RabbitQueue(settings.BROKER_START_URLS_QUEUE, durable=True))
