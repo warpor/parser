@@ -49,10 +49,10 @@ class Crawler:
                 await self.__process_html(html, work_item)
 
         except asyncio.TimeoutError:
-            logger.warn(f"Timeout error for URL: {work_item.url}")
+            logger.warning(f"Timeout error for URL: {work_item.url}")
 
         except ClientError as e:
-            logger.warn(f"Request error for URL: {work_item.url}. Exception: {str(e)}")
+            logger.warning(f"Request error for URL: {work_item.url}. Exception: {str(e)}")
 
         except Exception as e:
             logger.error(f"Unexpected error for URL:"

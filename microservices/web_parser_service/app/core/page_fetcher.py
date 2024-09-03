@@ -20,13 +20,13 @@ class PageFetcher:
                                timeout=settings.request_timeout_in_seconds) as response:
             if self.check_html(response, url):
                 return await response.text()
-            logger.warn(f"Can't fetch html from {url}")
+            logger.warning(f"Can't fetch html from {url}")
             return None
 
     @staticmethod
     def check_status(response: ClientResponse, url: str) -> bool:
         if not 200 <= response.status < 300:
-            logger.warn(f"Incorrect status code: {response.status} from {url}")
+            logger.warning(f"Incorrect status code: {response.status} from {url}")
             return False
         return True
 
