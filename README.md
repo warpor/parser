@@ -1,3 +1,6 @@
+## Задача
+Парсер произвольных сайтов и HTTP API для просмотра результатов парсинга.
+
 ## Зависимости
 Для запуска контейнеров нужен `docker-compose v2.x.x.`
 
@@ -12,27 +15,8 @@ docker compose -f docker-compose.yml build
 docker compose -f docker-compose.yml up
 ```
 
-После запуска api дооступно по адресу http://localhost:8000/docs
+После запуска api доступно по адресу http://localhost:8000/docs
 
-## Запуск тестов
-Перед запуском тестов стоит удалить запущенные контейнеры
-```
-docker compose -f docker-compose.test.yml --profile tests down  
-```
-Для  запуска тестов сервиса web parser
-
-```
-docker compose -f docker-compose.test.yml up web_parser_tests --abort-on-container-exit
-```
-
-Для  запуска тестов сервиса urls service
-```
-docker compose -f docker-compose.test.yml up web_parser_tests --abort-on-container-exit
-```
-После проверки  тестов запущенные контейнеры нужно удалить
-```
-docker compose -f docker-compose.test.yml --profile tests down  
-```
 ## CI  
 В проекте настроен CI и при каждом push и pull request код проверяется `mypy`(проверяется только папка `microservices`) и `flake8`.  
 После проверки кода запускаются тесты для микросервисов.
